@@ -1,47 +1,41 @@
-<?php session_start(); ?>
-<!doctype html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, -scale=1.0">
+    <title>Subscriptions</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
 
-        <?php
-        include 'header.php';
-        include 'calldatabase.php';
+<body>
+    <?php
+    include 'header.php'; //appel du header
+    include 'calldatabase.php'; //appel de la base de données
+    session_start();
+    if (!isset($_SESSION['connected_id'])){
+        header('Location: login.php');
+    };
+    $userId =intval($_SESSION['connected_id']);
+    ?>
+    
+    <div id="wrapper">
 
-        if (!isset($_SESSION['connected_id'])){
-            header('Location: login.php');
-        };
-
-        $userId =intval($_SESSION['connected_id']);
-        ?>
-
-        <div id="wrapper">
-            <aside>
-
-                <img src="user.jpg" alt="Portrait de l'utilisatrice"/>
-                <?php
-                              
+        <aside>
+            <img src="img/user.jpg" alt="Portrait de l'utilisatrice"/>
+            <?php                             
                 $laQuestionEnSql = "SELECT * FROM users WHERE id= '$userId' ";
                 $lesInformations = $mysqli->query($laQuestionEnSql);
-                $user = $lesInformations->fetch_assoc();
-                
-                ?>
-                <section>
-                    <h3>Présentation</h3>
-                    <p>Sur cette page vous trouverez la liste des personnes dont l'utilisatrice n° 
-                    <?php echo intval($_SESSION['connected_id']) ?>
-                    <?php echo $user['alias'] ?>
-                    
-                        
-                        suit les messages.
-                    </p>
+                $user = $lesInformations->fetch_assoc();                
+            ?>
+            <section>
+                <h3>Présentation</h3>
+                <p>Sur cette page vous trouverez la liste des personnes dont <?php echo $user['alias'] ?> suit les messages.</p>
+            </section>
+        </aside>
 
-                </section>
-            </aside>
-            <main class='contacts'>
-                <?php
-                // Etape 1: récupérer l'id de l'utilisateur
-                // $userId = intval($_GET['user_id']);
-                // Etape 2: se connecter à la base de donnée
-                // include 'calldatabase.php';
-                // Etape 3: récupérer le nom de l'utilisateur
+        <main class='contacts'>
+            <?php
                 $laQuestionEnSql = "
                     SELECT users.* 
                     FROM followers 
@@ -50,20 +44,17 @@
                     GROUP BY users.id
                     ";
                 $lesInformations = $mysqli->query($laQuestionEnSql);
-                // Etape 4: à vous de jouer
-                //@todo: faire la boucle while de parcours des abonnés et mettre les bonnes valeurs ci dessous 
-                while ($subscription = $lesInformations->fetch_assoc())
-                {
-                ?>
-                <article>
-                    <img src="user.jpg" alt="blason"/>
-                    <a href="wall.php?user_id=<?php echo $subscription['id'] ?>">
+                while ($subscription = $lesInformations->fetch_assoc()){
+            ?>
+            <article>
+                <img src="img/user.jpg" alt="blason"/>
+                <a href="wall.php?user_id=<?php echo $subscription['id'] ?>">
                     <h3><?php echo $subscription['alias'] ?></h3>
-                    </a>
-                    <p>id : <?php echo $subscription['id'] ?></p>                    
-                </article>
-                <?php } ?>
-            </main>
-        </div>
-    </body>
+                </a>
+                <p><?php //echo $subscription['id'] ?></p>                    
+            </article>
+            <?php } ?>
+        </main>
+    </div>
+</body>
 </html>

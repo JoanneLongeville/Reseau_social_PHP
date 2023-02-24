@@ -1,6 +1,5 @@
 <?php 
-if (isset($_SESSION['connected_id'])){
-    
+if (isset($_SESSION['connected_id'])){ 
     $like_sent = isset($_POST['post_id']);
     if($like_sent){
         $session_id = $_SESSION['connected_id'];
@@ -13,15 +12,13 @@ if (isset($_SESSION['connected_id'])){
             if(!$ok){
                 echo "L'ajout du like a échoué : " . $mysqli->error;
             }
-            // echo "Cet utilisateur n'a jamais liké.";
         }else {
-                //echo “<article> Vous avez déjà liké ce post.</article>“;
-               $delete_like_sql = "DELETE FROM socialnetwork.likes WHERE user_id = '$session_id' AND post_id = '$current_post_id'";
-               $ok = $mysqli->query($delete_like_sql);
-               if (!$ok) {
+            $delete_like_sql = "DELETE FROM socialnetwork.likes WHERE user_id = '$session_id' AND post_id = '$current_post_id'";
+            $ok = $mysqli->query($delete_like_sql);
+            if (!$ok) {
                    echo "La suppression du like a échoué : " . $mysqli->error;
-               }
-           }
+            }
         }
+    }
 }
 ?>

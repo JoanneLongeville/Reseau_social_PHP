@@ -1,62 +1,45 @@
-<?php session_start(); ?>
-<!doctype html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, -scale=1.0">
+    <title>Tags</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
 
+<body>
+    <?php
+    include 'header.php'; //appel du header
+    include 'calldatabase.php'; //appel de la base de données
+    session_start();
+    ?>
+
+    <div id="wrapper">
         <?php
-        include 'header.php'
-        ?>
-
-        <div id="wrapper">
-            <?php
-            /**
-             * Cette page est similaire à wall.php ou feed.php 
-             * mais elle porte sur les mots-clés (tags)
-             */
-            /**
-             * Etape 1: Le mur concerne un mot-clé en particulier
-             */
-            
-            // $tagId = intval($_GET['tag_id']);
-
             if (!isset($_GET['tag_id'])){
                 header('Location: tagsList.php');
-               }else{
-                    $tagId = intval($_GET['tag_id']);
-               };
-            ?>
-            <?php
-            /**
-             * Etape 2: se connecter à la base de donnée
-             */
-            include 'calldatabase.php';
-            ?>
+            }else{
+                $tagId = intval($_GET['tag_id']);
+            };
+        ?>
 
-            <aside>
-                <?php
-                /**
-                 * Etape 3: récupérer le nom du mot-clé
-                 */
+        <aside>
+            <?php
                 $laQuestionEnSql = "SELECT * FROM tags WHERE id= '$tagId' ";
                 $lesInformations = $mysqli->query($laQuestionEnSql);
                 $tag = $lesInformations->fetch_assoc();
-                //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par le label et effacer la ligne ci-dessous
-                // echo "<pre>" . print_r($tag, 1) . "</pre>";
-                ?>
-                <img src="user.jpg" alt="Portrait de l'utilisatrice"/>
-                <section>
-                    <h3>Présentation</h3>
-                    <p>Sur cette page vous trouverez les derniers messages comportant
-                        le mot-clé <?php echo $tag['label'] ?>
-                        <!-- (n° <?php echo $tagId ?>) -->
-                    </p>
+            ?>
+            <img src="img/user.jpg" alt="Portrait de l'utilisatrice"/>
+            <section>
+                <h3>Présentation</h3>
+                <p>Sur cette page vous trouverez les derniers messages comportant le mot-clé <?php echo $tag['label'] ?></p>
+            </section>
+        </aside>
 
-                </section>
-            </aside>
-            <main>
-                <?php
+        <main>
+            <?php
                 include('addLike.php');
-                /**
-                 * Etape 3: récupérer tous les messages avec un mot clé donné
-                 */
                 $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
@@ -76,53 +59,37 @@
                     ORDER BY posts.created DESC  
                     ";
                 $lesInformations = $mysqli->query($laQuestionEnSql);
-                if ( ! $lesInformations)
-                {
+                if ( ! $lesInformations){
                     echo("Échec de la requete : " . $mysqli->error);
                 }
-
-                /**
-                 * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
-                 */
-                while ($post = $lesInformations->fetch_assoc())
-                {
-
-                    // echo "<pre>" . print_r($post, 1) . "</pre>";
-                    ?>                
-                    <article>
-                        <h3>
-                            <time datetime='2020-02-01 11:12:13' ><?php echo $post['created'] ?></time>
-                        </h3>
-                        <a href="wall.php?user_id=<?php echo $post['user_id'] ?>">
-                        <address>par <?php echo $post['author_name'] ?></address>
-                        </a>
-                        <div>
-                            <p><?php echo $post['content'] ?></p>
-                        </div>                                            
-                        <footer>
-                            <small>
-                                <form method="post">
-                                <input type="hidden" value="<?php echo $post['post_id'] ?>" name="post_id"></input>
-                                <input type='submit' value="♥ <?php echo $post['like_number'] ?>">
-                                </form>        
-                            </small>
-                            <?php 
-                            $taglist = explode(",", $post['taglist']);
-                
-                            // var_dump($taglist);
-                            foreach ($taglist as $label) { ?>
-
-                                    <a href="">#<?php echo $label ?></a>
-                               
-                                <?php
-                  }
-                ?>
-                        </footer>
-                    </article>
-                <?php } ?>
-
-
-            </main>
-        </div>
-    </body>
+                while ($post = $lesInformations->fetch_assoc()){
+            ?>                
+            <article>
+                <h3>
+                    <time datetime='2020-02-01 11:12:13' ><?php echo $post['created'] ?></time>
+                </h3>
+                <a href="wall.php?user_id=<?php echo $post['user_id'] ?>">
+                    <address>par <?php echo $post['author_name'] ?></address>
+                </a>
+                <div>
+                    <p><?php echo $post['content'] ?></p>
+                </div>                                            
+                <footer>
+                    <small>
+                        <form method="post">
+                            <input type="hidden" value="<?php echo $post['post_id'] ?>" name="post_id"></input>
+                            <input type='submit' value="♥ <?php echo $post['like_number'] ?>">
+                        </form>        
+                    </small>
+                    <?php 
+                        $taglist = explode(",", $post['taglist']);
+                        foreach ($taglist as $label) { ?>
+                            <a href="">#<?php echo $label ?></a>                              
+                        <?php } ?>
+                </footer>
+            </article>
+            <?php } ?>
+        </main>
+    </div>
+</body>
 </html>
