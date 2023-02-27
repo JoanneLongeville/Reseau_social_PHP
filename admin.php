@@ -17,7 +17,7 @@
     <div id="wrapper" class='admin'>
 
         <aside>
-            <h2>Mots-clés</h2>
+            <h2>Hashtags</h2>
             <?php
             $laQuestionEnSql = "SELECT * FROM `tags` LIMIT 50";
             $lesInformations = $mysqli->query($laQuestionEnSql);
@@ -31,8 +31,6 @@
             <a href="tags.php?tag_id=<?php echo $tag['id'] ?>">
                 <article>
                     <h3>#<?php echo $tag['label'] ?></h3>
-                    <p><?php echo $tag['id'] ?></p>
-                    <nav>Messages</nav>
                 </article>
             </a>
             <?php 
@@ -41,7 +39,7 @@
         </aside>
 
         <main>
-            <h2>Utilisatrices</h2>
+            <h2>Users</h2>
             <?php
             $laQuestionEnSql = "SELECT * FROM `users` LIMIT 50";
             $lesInformations = $mysqli->query($laQuestionEnSql);
@@ -56,13 +54,12 @@
                 <a href="wall.php?user_id=<?php echo $tag['id'] ?>">
                     <h3><?php echo $tag['alias'] ?></h3>
                 </a>
-                <p><?php echo $tag['id'] ?></p>
                 <nav>
-                    <a href="wall.php?user_id=<?php echo $tag['id'] ?>">Mur</a>
-                    <a href="feed.php?user_id=<?php echo $tag['id'] ?>">Flux</a>
-                    <a href="settings.php?user_id=<?php echo $tag['id'] ?>">Paramètres</a>
-                    <a href="followers.php?user_id=<?php echo $tag['id'] ?>">Suiveurs</a>
-                    <a href="subscriptions.php?user_id=<?php echo $tag['id'] ?>">Abonnements</a>
+                    <a href="wall.php?user_id=<?php echo $tag['id'] ?>">Wall</a>
+                    <a href="feed.php?user_id=<?php echo $tag['id'] ?>">Feed</a>
+                    <a href="settings.php?user_id=<?php echo $tag['id'] ?>">Settings</a>
+                    <a href="followers.php?user_id=<?php echo $tag['id'] ?>">Followers</a>
+                    <a href="subscriptions.php?user_id=<?php echo $tag['id'] ?>">Subscriptions</a>
                 </nav>
             </article>
             <?php 
