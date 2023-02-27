@@ -53,14 +53,7 @@
             <article>
                 <a href="wall.php?user_id=<?php echo $tag['id'] ?>">
                     <h3><?php echo $tag['alias'] ?></h3>
-                </a>
-                <nav>
-                    <a href="wall.php?user_id=<?php echo $tag['id'] ?>">Wall</a>
-                    <a href="feed.php?user_id=<?php echo $tag['id'] ?>">Feed</a>
-                    <a href="settings.php?user_id=<?php echo $tag['id'] ?>">Settings</a>
-                    <a href="followers.php?user_id=<?php echo $tag['id'] ?>">Followers</a>
-                    <a href="subscriptions.php?user_id=<?php echo $tag['id'] ?>">Subscriptions</a>
-                </nav>
+                </a>               
             </article>
             <?php 
             } 
