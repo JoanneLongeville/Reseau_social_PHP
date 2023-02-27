@@ -23,13 +23,13 @@
         ?>
         
         <aside>
-            <h2>Présentation</h2>
-            <p>Bienvenu sur notre réseau social.</p>
+            <h2>Welcome !</h2>
+            <img src="img/bigai_Plan de travail 1.png" alt="AI">
         </aside>
 
         <main>
             <article>
-                <h2>Connexion</h2>
+                <h2>Please log in :</h2>
                 <?php
                 $enCoursDeTraitement = isset($_POST['email']);
                 if ($enCoursDeTraitement)
@@ -49,10 +49,10 @@
                     $user = $res->fetch_assoc();
                     if ( !$user OR $user["password"] != $passwdAVerifier)
                     {
-                        echo "La connexion a échouée.";
+                        echo "Connection failed.";
                         
                     } else {
-                        echo "Votre connexion est un succès : " . $user['alias'] . ".";
+                        echo "Hello " . $user['alias'] . " !";
                         $_SESSION['connected_id'] = $user['id'];
                         header('Location: wall.php');
                         exit;
@@ -64,12 +64,12 @@
                     <dl>
                         <dt><label for='email'>E-Mail</label></dt>
                         <dd><input type='email'name='email'></dd>
-                        <dt><label for='motpasse'>Mot de passe</label></dt>
+                        <dt><label for='motpasse'>Password</label></dt>
                         <dd><input type='password'name='motpasse'></dd>
                     </dl>
                     <input type='submit'>
                 </form>
-                <p>Pas de compte?<a href='registration.php'>Inscrivez-vous.</a></p>
+                <p>Not registered yet ? <a href='registration.php'>Register</a></p>
             </article>
         </main>
     </div>
