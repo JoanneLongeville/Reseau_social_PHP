@@ -27,11 +27,10 @@
     </nav>
 </header>
 
-
-
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])){ 
     session_destroy(); 
-    header('Refresh:0');
+    //header('Refresh:0');
+    header('Location: login.php'); 
 }
 ?>
