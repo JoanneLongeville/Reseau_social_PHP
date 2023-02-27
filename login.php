@@ -16,6 +16,11 @@
     ?>
 
     <div id="wrapper">
+        <?php
+            if (isset($_SESSION['connected_id'])){
+                header('Location: feed.php');
+            }
+        ?>
         
         <aside>
             <h2>Présentation</h2>
@@ -35,19 +40,22 @@
                     $passwdAVerifier = $mysqli->real_escape_string($passwdAVerifier);
                     // crypter le mot de passe
                     $passwdAVerifier = md5($passwdAVerifier);
-                    $lInstructionSql = "SELECT * FROM users WHERE email LIKE $emailAVerifier";
+                    $lInstructionSql = "SELECT * "
+                    . "FROM users "
+                    . "WHERE "
+                    . "email LIKE '" . $emailAVerifier . "'";
                     //vérification de l'utilisateur
                     $res = $mysqli->query($lInstructionSql);
                     $user = $res->fetch_assoc();
-                    if ( ! $user OR $user["password"] != $passwdAVerifier)
+                    if ( !$user OR $user["password"] != $passwdAVerifier)
                     {
-                        echo "La connexion a échouée. ";
+                        echo "La connexion a échouée.";
                         
-                    } else
-                    {
+                    } else {
                         echo "Votre connexion est un succès : " . $user['alias'] . ".";
-                        $_SESSION['connected_id']=$user['id'];
-                        // header('Location: news.php');
+                        $_SESSION['connected_id'] = $user['id'];
+                        header('Location: wall.php');
+                        exit;
                     }
                 }
                 ?>                     
