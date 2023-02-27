@@ -17,13 +17,13 @@
     <div id="wrapper">
 
         <aside>
-            <h2>Présentation</h2>
-            <p>Bienvenu sur notre réseau social.</p>
+            <h2>Welcome !</h2>
+            <img src="img/bigai_Plan de travail 1.png" alt="AI">
         </aside>
 
         <main>
             <article>
-                <h2>Inscription</h2>
+                <h2>Please sign in :</h2>
                 <?php
                 $enCoursDeTraitement = isset($_POST['email']);
                 if ($enCoursDeTraitement){
@@ -35,7 +35,7 @@
                     $result = $mysqli->query($sql);
                     if ($result->num_rows > 0) {
                         // L'adresse e-mail ou le pseudo existe déjà
-                        echo "L'adresse e-mail ou le pseudo existe déjà. Veuillez en choisir un autre.";
+                        echo "E-mail or name already exist. Please choose another one.";
                     } else {
                             // L'adresse e-mail et le pseudo sont disponibles, on peut ajouter un nouvel utilisateur
                             // ... code pour ajouter un nouvel utilisateur ...
@@ -53,21 +53,21 @@
                         . ");";
                     $ok = $mysqli->query($lInstructionSql);
                     if ( ! $ok){
-                        echo "L'inscription a échouée : " . $mysqli->error;
+                        echo "Sign in failed : " . $mysqli->error;
                     } else{
-                        echo "Votre inscription est un succès : " . $new_alias;
-                        echo " <a href='login.php'>Connectez-vous.</a>";
+                        echo "Hello " . $new_alias;
+                        echo " <a href='login.php'>Login</a>";
                     }
                 }
                 ?>                     
                 <form action="registration.php" method="post">
                     <input type='hidden'name='???' value='achanger'>
                     <dl>
-                        <dt><label for='pseudo'>Pseudo</label></dt>
+                        <dt><label for='pseudo'>Name</label></dt>
                         <dd><input type='text'name='pseudo'></dd>
-                        <dt><label for='email'>E-Mail</label></dt>
+                        <dt><label for='email'>E-mail</label></dt>
                         <dd><input type='email'name='email'></dd>
-                        <dt><label for='motpasse'>Mot de passe</label></dt>
+                        <dt><label for='motpasse'>Password</label></dt>
                         <dd><input type='password'name='motpasse'></dd>
                     </dl>
                         <input type='submit'>
