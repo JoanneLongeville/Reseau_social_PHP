@@ -17,43 +17,59 @@
 
     <div id="wrapper">
         <aside>
-            <?php                   
-            $laQuestionEnSql = "SELECT * FROM users WHERE id= '$userId' ";
-            $lesInformations = $mysqli->query($laQuestionEnSql);
-            $user = $lesInformations->fetch_assoc();
-            $enCoursDeTraitement = isset($_POST['follow']);
-            if ($enCoursDeTraitement) {
-                $follower = $_SESSION['connected_id'];
-                $followed = $user["id"];
-                $instructionSql = "INSERT INTO followers" . "(id, followed_user_id, following_user_id)" . "VALUES (NULL,"
-                    . $followed . ", " . $follower . ");";
+        <?php
+        //récupérer le nom de l'utilisateur
+        $laQuestionEnSql = "SELECT * FROM users WHERE id= '$userId' ";
+        $lesInformations = $mysqli->query($laQuestionEnSql);
+        $user = $lesInformations->fetch_assoc();
+        $enCoursDeTraitement = isset($_POST['follow']);
+        if ($enCoursDeTraitement) {
+            $follower = $_SESSION['connected_id'];
+            $followed = $user["id"];
+            $instructionSql = "SELECT * FROM followers WHERE followed_user_id = $followed AND following_user_id = $follower";
+            $result = $mysqli->query($instructionSql);
+            if ($result->num_rows > 0) {
+                // Si l'utilisateur est déjà abonné, supprimez l'abonnement
+                $instructionSql = "DELETE FROM followers WHERE followed_user_id = $followed AND following_user_id = $follower";
                 $ok = $mysqli->query($instructionSql);
                 if (!$ok) {
-                    echo "Can't subscribe";
+                    //echo "Impossible de se désabonner.";
                 } else {
-                    // echo "vous etes abonné";
+                    //echo "Vous vous êtes désabonné.";
+                }
+            } else {
+                // Si l'utilisateur n'est pas abonné, ajoutez l'abonnement
+                $instructionSql = "INSERT INTO followers (id, followed_user_id, following_user_id) VALUES (NULL, $followed, $follower)";
+                $ok = $mysqli->query($instructionSql);
+                if (!$ok) {
+                    //echo "Impossible de s'abonner.";
+                } else {
+                    //echo "Vous êtes abonné.";
                 }
             }
-            ?>                
-            <img src="img/bighead-09.png" alt="Portrait de l'utilisatrice"/>
-            <?php
-                $follower = $_SESSION['connected_id'];
-                $followed = $user["id"];
-                $sql = "SELECT * FROM followers WHERE followed_user_id = '$followed' AND following_user_id = '$follower'";
-                $result = $mysqli->query($sql);
-                if ($follower == $followed) {
-                    echo "<h3>Hello " . $user['alias'] . "</h3>";
-                    //echo "Vous ne pouvez pas vous suivre vous meme!";
-                } else if ($result->num_rows < 1) {
-            ?>
-            <p>This is the wall of <?php echo $user['alias'] ?></p>
+        }
+
+        ?>
+        <img src="img/bighead-09.png" alt="Portrait de l'utilisatrice" />
+        <section>
+            <h3 class="nameuser"><?php echo $user["alias"] ?></h3>
+        </section>
+        <?php
+        $follower = $_SESSION['connected_id'];
+        $followed = $user["id"];
+        $sql = "SELECT * FROM followers WHERE followed_user_id = '$followed' AND following_user_id = '$follower'";
+        $result = $mysqli->query($sql);
+        if ($follower == $followed) {
+        } else if ($result->num_rows < 1) {
+        ?>
             <form method='post'>
-                <button type="submit" name="follow">Subscribe</button>
+                <button class="follow" type="submit" name="follow">Follow</button>
             </form>
-                <?php } else {
-                    echo "This is the wall of " . $user['alias'] . "<br>" . "<br>" . "You're already a follower";
-                }
-                ?>
+        <?php } else { ?>
+            <form method='post'>
+                <button class="unfollow" type="submit" name="follow">Unfollow</button>
+            </form>
+        <?php } ?>
         </aside>
 
         <main>
