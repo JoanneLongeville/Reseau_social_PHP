@@ -12,19 +12,10 @@
     <?php
     include 'header.php'; //appel du header
     include 'calldatabase.php'; //appel de la base de données
-    session_start();
+    include 'notConnected.php'; //redirection si pas connecté
     ?>
 
     <div id="wrapper">
-        <?php
-            if (!isset($_SESSION['connected_id'])){
-                header('Location: login.php');
-            } else if(isset($_SESSION['connected_id']) && isset($_GET['user_id'])){
-                $userId =intval($_GET['user_id']);
-            } else if(isset($_SESSION['connected_id']) && !isset($_GET['user_id'])){
-                $userId =intval($_SESSION['connected_id']);
-            }            
-        ?>
         <aside>
             <?php                   
                 $laQuestionEnSql = "SELECT * FROM users WHERE id= '$userId' ";
