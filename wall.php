@@ -67,7 +67,7 @@
                 users.id, 
                 COUNT(likes.id) as like_number, 
                 GROUP_CONCAT(DISTINCT tags.label) AS taglist,
-                GROUP_CONCAT(DISTINCT tags.id) AS tagID 
+                GROUP_CONCAT(DISTINCT tags.id) AS tagId 
                 FROM posts
                 JOIN users ON  users.id = posts.user_id
                 LEFT JOIN posts_tags ON posts.id = posts_tags.post_id  
@@ -93,16 +93,15 @@
             </div>                                            
                 <footer>
                     <small>
-                        <form method="post">
-                            <input type="hidden" value="<?php echo $post['post_id'] ?>" name="post_id"></input>
-                            <input type='submit' value="♥ <?php echo $post['like_number'] ?>">
-                        </form>
+                        <?php include"addLikeColor.php" ?>
                     </small>
                     <?php 
-                        $taglist = explode(",", $post['taglist']);
-                        foreach ($taglist as $label) { ?>
-                            <a href="tags.php?tag_id=<?php echo $post['tagID'] ?>" id="tagsList">#<?php echo $label ?></a>                               
-                        <?php } ?>
+                    $taglist = $post['taglist'];
+                    $tags = explode(",", $post['taglist']);
+                    foreach ($tags as $value) {
+                    ?>
+                    <a href="tags.php?tag_id=<?php echo $post['tagId'] ?>"><?php echo "#" . $value ?></a>                               
+                    <?php } ?>
                 </footer>
             </article>
                 <?php } ?>
