@@ -12,16 +12,15 @@
     <?php
     include 'header.php'; //appel du header
     include 'calldatabase.php'; //appel de la base de données
-    session_start();
     ?>
 
     <div id="wrapper">
 
         <aside>
-            <img src="img/user.jpg" alt="Portrait de l'utilisatrice"/>
+            <img src="./img/bigai_Plan de travail 1.png" alt="Portrait de l'utilisatrice" />
             <section>
-                <h3>Présentation</h3>
-                <p>Sur cette page vous trouverez les derniers messages de tous les utilisateurs du site.</p>
+                <h3 class="nameuser">THE BIG WALL</h3>
+                <p>On this page you'll see all the messages from our community</p>
             </section>
         </aside>
 
@@ -44,7 +43,7 @@
                 LEFT JOIN likes      ON likes.post_id  = posts.id 
                 GROUP BY posts.id
                 ORDER BY posts.created DESC  
-                LIMIT 5
+                LIMIT 20
                 ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
             // Vérification
@@ -57,27 +56,29 @@
             while ($post = $lesInformations->fetch_assoc()){
             ?>
             <article>
-                <h3><time><?php echo $post['created'] ?></time></h3>
+                <h3>
+                    <time><?php echo $post['created'] ?></time>
+                </h3>
                 <a href="wall.php?user_id=<?php echo $post['user_id'] ?>">
-                    <address>par <?php echo $post['author_name'] ?></address>
+                    <address>
+                        from 
+                        <?php echo $post['author_name'] ?>
+                    </address>
                 </a>
                 <div>
                     <p><?php echo $post['content'] ?></p>
                 </div>
                 <footer>
                     <small>
-                        <form method="post">
-                            <input type="hidden" value="<?php echo $post['post_id'] ?>" name="post_id"></input>
-                            <input type='submit' value="♥ <?php echo $post['like_number'] ?>">
-                        </form>
+                        <?php include 'addLikeColor.php' ?>
                     </small>
                     <?php 
-                    $taglist = explode(",", $post['taglist']);
-                    foreach ($taglist as $label) { ?>
-                        <a href="tags.php?tag_id=<?php echo $post['tagID'] ?>">#<?php echo $label ?></a>                              
-                    <?php
-                    }
-                    ?>                           
+                    $taglist = $post['taglist'];
+                    $tags = explode(",", $post['taglist']);
+                    foreach ($tags as $value) {
+                    ?>
+                    <a href="tags.php?tag_id=<?php echo $post['tagID'] ?>"><?php echo "#" . $value ?></a>
+                    <?php } ?>                    
                 </footer>
             </article>
             <?php
