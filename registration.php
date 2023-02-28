@@ -35,7 +35,7 @@
                     $result = $mysqli->query($sql);
                     if ($result->num_rows > 0) {
                         // L'adresse e-mail ou le pseudo existe déjà
-                        echo "E-mail or name already exist. Please choose another one.";
+                        echo "E-mail or name already exist, please choose another one.";
                     } else {
                             // L'adresse e-mail et le pseudo sont disponibles, on peut ajouter un nouvel utilisateur
                             // ... code pour ajouter un nouvel utilisateur ...
@@ -53,10 +53,10 @@
                         . ");";
                     $ok = $mysqli->query($lInstructionSql);
                     if ( ! $ok){
-                        echo "Sign in failed : " . $mysqli->error;
+                        //echo "Sign in failed : " . $mysqli->error;
                     } else{
-                        echo "Hello " . $new_alias;
-                        echo " <a href='login.php'>Login</a>";
+                        echo "Hello " . $new_alias . " ! Go ";
+                        echo " <a href='login.php'>sign in !</a>";
                     }
                 }
                 ?>                     
@@ -70,7 +70,7 @@
                         <dt><label for='motpasse'>Password</label></dt>
                         <dd><input type='password'name='motpasse'></dd>
                     </dl>
-                        <input type='submit'>
+                        <input type='submit' value="Submit">
                 </form>
             </article>
         </main>
