@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])){
     <nav id="user">
         <a href="#">Profil</a>
             <ul>
-                <li><a href="login.php">Login / Subscribe</a></li>
+                <li><a href="login.php">Login / Register</a></li>
                 <li><a href="settings.php">Settings</a></li>
                 <li><a href="followers.php">Followers</a></li>
                 <li><a href="subscriptions.php">Subscriptions</a></li>
