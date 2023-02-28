@@ -29,31 +29,31 @@
                     . $followed . ", " . $follower . ");";
                 $ok = $mysqli->query($instructionSql);
                 if (!$ok) {
-                    echo "impossible de s'abonner";
+                    echo "Can't subscribe";
                 } else {
                     // echo "vous etes abonné";
                 }
             }
             ?>                
-            <img src="img/user.jpg" alt="Portrait de l'utilisatrice"/>
-            <section>
-                <h3>Présentation</h3>
-                <p>Sur cette page vous trouverez tous les message de l'utilisatrice : <?php echo $user['alias'] ?></p>
-            </section>
+            <img src="img/bighead-09.png" alt="Portrait de l'utilisatrice"/>
             <?php
                 $follower = $_SESSION['connected_id'];
                 $followed = $user["id"];
                 $sql = "SELECT * FROM followers WHERE followed_user_id = '$followed' AND following_user_id = '$follower'";
                 $result = $mysqli->query($sql);
                 if ($follower == $followed) {
-                    echo "Vous ne pouvez pas vous suivre vous meme!";
+                    echo "<h3>Hello " . $user['alias'] . "</h3>";
+                    //echo "Vous ne pouvez pas vous suivre vous meme!";
                 } else if ($result->num_rows < 1) {
             ?>
-            <form method='post'><button type="submit" name="follow">S'abonner à <?php echo $user["id"] ?></button></form>
-            <?php } else {
-                        echo "Vous etes déjà abonné";
-                    }
-            ?>
+            <p>This is the wall of <?php echo $user['alias'] ?></p>
+            <form method='post'>
+                <button type="submit" name="follow">Subscribe</button>
+            </form>
+                <?php } else {
+                    echo "This is the wall of " . $user['alias'] . "<br>" . "<br>" . "You're already a follower";
+                }
+                ?>
         </aside>
 
         <main>
